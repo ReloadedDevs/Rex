@@ -1,4 +1,4 @@
-module.exports.run = (Client, msg) => {
+module.exports.run = (Client, msg, xp, level) => {
     if(msg.channel.type == "text" && msg.content.startsWith(Client.prefix) || msg.content.startsWith('<@'+Client.user.id+'>') || msg.content.startsWith('<@!'+Client.user.id+'>')) {
         if(Client.functions.checkPermissions(msg) == false) return;
 
@@ -10,7 +10,7 @@ module.exports.run = (Client, msg) => {
         var cmd = Client.commands.get(invoke);
 
         if(cmd) {
-            cmd.run(Client, msg, args, true);
+            cmd.run(Client, msg, args, xp, level, true);
         }
     }
 }
