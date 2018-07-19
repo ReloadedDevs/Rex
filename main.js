@@ -3,11 +3,7 @@ const debug = true;
 
 const Discord = require('discord.js');
 const fs = require('fs');
-
-//quick.db
 const db = require('quick.db');
-const xp = new db.table('xp');
-const level = new db.table('level');
 db.createWebview('password', '1111');
 
 const logger = require('./utils/logger');
@@ -31,6 +27,12 @@ class Rex extends Discord.Client {
         this.prefix = (debug ? "rt!" : "r!");
         this.commands = new Discord.Collection();
         this.servers = new Discord.Collection();
+        this.db = db;
+        this.coins = coins;
+        this.amountOfCoins = new db.table('coins');
+        this.xp = new db.table('xp');
+        this.level = new db.table('level');
+        this.boughtColors = new db.table('boughtColors');
 //        this.mysql = new Connection.MySql("127.0.0.1", "bot", "bot");
     }
 }
@@ -42,8 +44,8 @@ const init = async () => {
     await loader.run(Client);
 
     Client.on('message', msg => {
-        commandHandler.run(Client, msg, xp, level);
-        giveXP.run(msg, xp, level, Client);
+        commandHandler.run(Client, msg);
+        giveXP.run(msg, Client, Client.xp, Client.level);
     });
 }
 

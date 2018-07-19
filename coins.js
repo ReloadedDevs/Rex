@@ -1,26 +1,27 @@
-const db = require('quick.db');
-const coins = new db.table('coins')
 module.exports = {
-    add(person, amount) {
-        if (coins.fetch(person)) {
-            coins.add(person, amount);
+    async add(person, amount, Client) {
+        var fetchedCoins = await Client.amountOfCoins.fetch(person)
+        if (fetchedCoins != null) {
+            Client.amountOfCoins.add(person, amount);
         } else {
-            coins.set(person, amount);
-        };
+            Client.amountOfCoins.set(person, amount);
+        }
     },
 
-    substract(person, amount) {
-        if (coins.fetch(person)) {
-            coins.fetch(person).then(c => {
+    async subtract(person, amount, Client) {
+        var fetchedCoins = await Client.amountOfCoins.fetch(person)
+        if (fetchedCoins != null) {
+            Client.amountOfCoins.fetch(person).then(c => {
                 if (c >= amount) {
-                    coins.substract(person, amount);
-                    return true;
+                    Client.amountOfCoins.subtract(person, amount);
+                    //return true;
+                    callback(true)
                 } else {
                     return false;
                 };
             });
         } else {
             return false;
-        };
+        }
     }
 }
