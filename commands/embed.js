@@ -7,13 +7,27 @@ var colors = {
     green: 0x2ecc71
 }
 module.exports.run = (Client, msg, args) => {
-    if (args.split(' ').slice(0) in colors) {
-        
+    msg.delete();
+    if (args) {
+        var wantedColor = args[0];
+        args.shift();
+        var content = args.join(' ');
+        if (wantedColor in colors) {
+            Client.boughtColors.fetch(msg.author.id + '_' + wantedColor).then(hasColor => {
+                if (hasColor != null) {
+                    msg.channel.createWebhook(msg.member.displayName, msg.author.displayAvatarURL).then(async wh => {
+                        await wh.send('',{embeds: [{
+                            color: colors[wantedColor],
+                            description: content
+                        }]});
+                        wh.delete();
+                    });
+                } else {
+                    msg.channel.send(msg.author.toString() + ", you don't own this color.").then(errmsg => errmsg.delete(10000));
+                }
+            })
+        } else {
+            msg.channel.send(msg.author.toString() + ", you did not enter a valid color.").then(errmsg => errmsg.delete(10000));
+        }
     }
-    msg.channel.createWebhook(msg.member.displayName, msg.author.displayAvatar).then(wh => {
-        
-        wh.send({embed: {
-            
-        }})
-    })
 }
