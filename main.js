@@ -12,8 +12,10 @@ const commandHandler = require('./utils/commandHandler');
 //const Connection = require('./utils/mysql');
 const functions = require('./utils/functions');
 
-const giveXP = require('./xp');
-const coins  = require('./coins')
+const giveXP      = require('./xp');
+const coins       = require('./coins');
+const count       = require('./count.js');
+const statsupdate = require('./statsupdate.js')
 
 const config = JSON.parse(fs.readFileSync("./config.json", "utf8"));
 
@@ -33,7 +35,9 @@ class Rex extends Discord.Client {
         this.xp = new db.table('xp');
         this.level = new db.table('level');
         this.boughtColors = new db.table('boughtColors');
-//        this.mysql = new Connection.MySql("127.0.0.1", "bot", "bot");
+        this.count = new db.table('count');
+        this.statchannels = new db.table('statchannels');
+        this.statchannelsGuilds = new db.table('statchannelsGuilds');
     }
 }
 
@@ -43,10 +47,19 @@ const init = async () => {
     Client.login((debug == true ? config.bot.debug_token : config.bot.token)).then(Client.log.info("[Core] Successfully logged in to Discord API! Waiting for response..."));
     await loader.run(Client);
 
-    Client.on('message', msg => {
-        commandHandler.run(Client, msg);
-        giveXP.run(msg, Client, Client.xp, Client.level);
+    Client.on('message', async msg => {
+        var isCountChannel = await Client.count.fetch(msg.channel.id);
+        if (isCountChannel == null) {
+            commandHandler.run(Client, msg);
+            giveXP.run(msg, Client, Client.xp, Client.level);
+        } else {
+            count.run(Client, msg);
+        }
     });
+
+    Client.on('ready', function() {
+        //statsupdate.run(Client);
+    })
 }
 
 init();
