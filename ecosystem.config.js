@@ -2,7 +2,7 @@ module.exports = {
     apps: [
         {
             name: 'Rex',
-            script: 'app.js',
+            script: 'main.js',
             env: { COMMON_VARIABLE: 'true' },
             env_production: { NODE_ENV: 'production' },
             env_hook: {
