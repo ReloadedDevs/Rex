@@ -1,6 +1,8 @@
 {
     "bot": {
-        "token":" ",
-        "debug_token":"NDYyNjcwNjMyMzYyOTY3MDUw.DhlPHw.WQgTYYwFudCbgz23JYEFeZB4Nuw"
+        "token":"NDcwODQzMjA1NTYzNDQ5MzQ1.Djmyyw.EG_MPiW8dgs5PMV5QCUX-JDXA-s",
+        "debug_token":"NDYyNjcwNjMyMzYyOTY3MDUw.DhlPHw.WQgTYYwFudCbgz23JYEFeZB4Nuw",
+        "prefix": "r!",
+        "owner": "221905671296253953"
     }
 }
