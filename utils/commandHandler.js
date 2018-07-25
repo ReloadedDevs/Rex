@@ -6,11 +6,12 @@ module.exports.run = (Client, msg) => {
 
         const invoke = msg.content.split(' ')[0].substr(Client.prefix.length);
         const args   = msg.content.split(' ').slice(1);
-    
+        const argresult = msg.content.substring(invoke.length + 1);
+
         const cmd = Client.commands.get(invoke);
 
         if(cmd) {
-            cmd.run(Client, msg, args, true);
+            cmd.run(Client, msg, args, true, argresult);
         }
     }
 }
