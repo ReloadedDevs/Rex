@@ -1,5 +1,5 @@
 const debug = false;
-(debug == false ? console.log("Debug is on!") : console.log("Debug is off!"));
+(debug == true ? console.log("Debug is on!") : console.log("Debug is off!"));
 
 const Discord = require('discord.js');
 const fs = require('fs');
@@ -25,7 +25,7 @@ class Rex extends Discord.Client {
         this.config = config;
         this.log = logger;
         this.functions = functions;
-        this.prefix = (debug ? "rt!" : config.prefix);
+        this.prefix = (debug ? "rt!" : config.bot.prefix);
         this.owner = config.owner;
         this.commands = new Discord.Collection();
         this.servers = new Discord.Collection();
@@ -44,7 +44,7 @@ class Rex extends Discord.Client {
 const Client = new Rex({ messageCacheMaxSize: 100, messageCacheLifetime: 86400, messageSweepInterval: 86400, disabledEvents: ['TYPING_START'] });
 
 const init = async () => {
-    Client.login((debug == false ? config.bot.debug_token : config.bot.token)).then(Client.log.info("[Core] Successfully logged in to Discord API! Waiting for response..."));
+    Client.login((debug == true ? config.bot.debug_token : config.bot.token)).then(Client.log.info("[Core] Successfully logged in to Discord API! Waiting for response..."));
     await loader.run(Client);
 
     Client.on('message', async msg => {
